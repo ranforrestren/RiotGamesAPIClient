@@ -99,6 +99,25 @@ namespace RiotGamesAPIClient.Controllers
             return NoContent();
         }
 
+        // GET: api/Players/byName/GAMENAME/TAGLINE
+        [HttpGet("byName/{gameName}/{tagLine}")]
+        public async Task<ActionResult<Player>> GetPlayerByName(string gameName, string tagLine)
+        {
+            // try to find existing player object with matching gameName and tagLine
+            var player = await _context.Players
+                .Where(e => e.PlayerRiotName == gameName && e.PlayerRiotTagline == tagLine)
+                .FirstOrDefaultAsync();
+            // create player if no match found
+            if (player == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return player;
+            }
+        }
+
         private bool PlayerExists(int id)
         {
             return _context.Players.Any(e => e.PlayerId == id);
