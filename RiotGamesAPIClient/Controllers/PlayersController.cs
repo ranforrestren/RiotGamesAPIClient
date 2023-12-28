@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RiotGamesAPIClient.Models;
+using RiotGamesAPIClient.Services;
 
 namespace RiotGamesAPIClient.Controllers
 {
@@ -15,9 +16,12 @@ namespace RiotGamesAPIClient.Controllers
     {
         private readonly PlayerDbContext _context;
 
-        public PlayersController(PlayerDbContext context)
+        private readonly RiotGamesAPIService _riotGamesAPIService;
+
+        public PlayersController(PlayerDbContext context, RiotGamesAPIService riotGamesAPIService)
         {
             _context = context;
+            _riotGamesAPIService = riotGamesAPIService;
         }
 
         // GET: api/Players
@@ -110,7 +114,26 @@ namespace RiotGamesAPIClient.Controllers
             // create player if no match found
             if (player == null)
             {
-                return NotFound();
+                // create HTTPRequest to get player UUID and create player object otherwise
+                var playerDTO = await _riotGamesAPIService.GetPlayerByNameAsync(gameName, tagLine);
+                if (playerDTO == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    // create new player from playerDTO
+                    var newPlayer = new Player();
+                    newPlayer.PlayerRiotUUID = playerDTO.puuid;
+                    newPlayer.PlayerRiotName = playerDTO.gameName;
+                    newPlayer.PlayerRiotTagline = playerDTO.tagLine;
+                    Console.Write(newPlayer);
+                    // and save to DB
+                    _context.Players.Add(newPlayer);
+                    await _context.SaveChangesAsync();
+
+                    return CreatedAtAction(nameof(GetPlayer), new { id = newPlayer.PlayerId }, newPlayer);
+                }
             }
             else
             {

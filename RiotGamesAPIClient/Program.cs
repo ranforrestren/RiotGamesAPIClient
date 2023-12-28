@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using RiotGamesAPIClient.Models;
+using RiotGamesAPIClient.Services;
 
 namespace RiotGamesAPIClient
 {
@@ -16,6 +17,7 @@ namespace RiotGamesAPIClient
             builder.Services.AddControllers();
             var conStrBuilder = new SqlConnectionStringBuilder(
                 builder.Configuration.GetConnectionString("DefaultConnection"));
+            // load secrets
             conStrBuilder.DataSource = builder.Configuration["SQLExpressServerName"];
             Console.WriteLine(conStrBuilder.ToString());
             var connectionString = conStrBuilder.ConnectionString;
@@ -23,6 +25,8 @@ namespace RiotGamesAPIClient
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            // create the HttpClient service
+            builder.Services.AddHttpClient<RiotGamesAPIService>();
 
             var app = builder.Build();
 
