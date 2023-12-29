@@ -6,7 +6,6 @@ import { ref } from 'vue';
 async function getByName(name, tag) {
     const response = await fetch(`https://localhost:7179/api/Players/byName/${name}/${tag}`);
     const player = await response.json();
-    console.log(player);
 }
 </script>
 

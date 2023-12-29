@@ -1,5 +1,6 @@
 ﻿using Microsoft.Net.Http.Headers;
 using RiotGamesAPIClient.Models;
+using System.Net;
 using System.Text.Json;
 
 namespace RiotGamesAPIClient.Services
@@ -28,8 +29,14 @@ namespace RiotGamesAPIClient.Services
         {
             var message = await _httpClient.GetAsync($"/riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}");
             Console.Write(message.Content.ReadAsStringAsync().Result);
-            var playerDTO = await message.Content.ReadFromJsonAsync<PlayerDTO>();
-            return playerDTO;
+            if (message.StatusCode == HttpStatusCode.OK)
+            {
+                var playerDTO = await message.Content.ReadFromJsonAsync<PlayerDTO>();
+                return playerDTO;
+            } else
+            {
+                return null;
+            }
         }
     }
 }

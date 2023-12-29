@@ -10,10 +10,20 @@ namespace RiotGamesAPIClient
     {
         public static void Main(string[] args)
         {
+            var AllowVueFrontend = "_allowVueFrontend";
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: AllowVueFrontend,
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost")
+                        .AllowAnyOrigin();
+                    });
+            });
             builder.Services.AddControllers();
             var conStrBuilder = new SqlConnectionStringBuilder(
                 builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -39,8 +49,9 @@ namespace RiotGamesAPIClient
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseCors(AllowVueFrontend);
 
+            app.UseAuthorization();
 
             app.MapControllers();
 
