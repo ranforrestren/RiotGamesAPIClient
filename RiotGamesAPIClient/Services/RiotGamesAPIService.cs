@@ -1,7 +1,5 @@
-﻿using Microsoft.Net.Http.Headers;
-using RiotGamesAPIClient.Models;
+﻿using RiotGamesAPIClient.Models;
 using System.Net;
-using System.Text.Json;
 
 namespace RiotGamesAPIClient.Services
 {

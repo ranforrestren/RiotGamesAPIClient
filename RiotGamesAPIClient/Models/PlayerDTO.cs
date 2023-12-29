@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace RiotGamesAPIClient.Models
+﻿namespace RiotGamesAPIClient.Models
 {
     public class PlayerDTO
     {
