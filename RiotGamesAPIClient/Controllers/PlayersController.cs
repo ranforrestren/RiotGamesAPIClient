@@ -127,7 +127,6 @@ namespace RiotGamesAPIClient.Controllers
                     newPlayer.PlayerRiotUUID = playerDTO.puuid;
                     newPlayer.PlayerRiotName = playerDTO.gameName;
                     newPlayer.PlayerRiotTagline = playerDTO.tagLine;
-                    Console.Write(newPlayer);
                     // and save to DB
                     _context.Players.Add(newPlayer);
                     await _context.SaveChangesAsync();

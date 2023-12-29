@@ -3,9 +3,12 @@ import { ref } from 'vue';
     let gameName = null;
     let tagLine = null;
 
+const emits = defineEmits(['search']);
+
 async function getByName(name, tag) {
     const response = await fetch(`https://localhost:7179/api/Players/byName/${name}/${tag}`);
     const player = await response.json();
+    emits('search', player);
 }
 </script>
 
@@ -26,6 +29,9 @@ async function getByName(name, tag) {
         align-items: center;
         color: #171717a0;
         transition: filter 300ms;
+        width: 800px;
+        margin: auto;
+        margin-bottom: 40px;
     }
     input {
         border: none;

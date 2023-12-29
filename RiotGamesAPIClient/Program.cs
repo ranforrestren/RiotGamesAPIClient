@@ -29,7 +29,6 @@ namespace RiotGamesAPIClient
                 builder.Configuration.GetConnectionString("DefaultConnection"));
             // load secrets
             conStrBuilder.DataSource = builder.Configuration["SQLExpressServerName"];
-            Console.WriteLine(conStrBuilder.ToString());
             var connectionString = conStrBuilder.ConnectionString;
             builder.Services.AddDbContext<PlayerDbContext>(options => options.UseSqlServer(connectionString));
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
