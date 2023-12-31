@@ -2,7 +2,7 @@
 using RiotGamesAPIClient.src.Application.Interfaces;
 using RiotGamesAPIClient.src.Application.Models;
 
-namespace RiotGamesAPIClient.Controllers
+namespace RiotGamesAPIClient.src.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -23,7 +23,8 @@ namespace RiotGamesAPIClient.Controllers
             if (player == null)
             {
                 return NotFound();
-            } else
+            }
+            else
             {
                 return player;
             }

@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RiotGamesAPIClient.src.Application.Interfaces;
 using RiotGamesAPIClient.src.Application.Models;
-using RiotGamesAPIClient.src.Infrastructure.UnitOfWork;
+using RiotGamesAPIClient.src.Infrastructure.EFCore.DbContexts;
 
 namespace RiotGamesAPIClient.src.Infrastructure.Repositories
 {

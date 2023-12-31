@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RiotGamesAPIClient.src.Application.Models;
 
-namespace RiotGamesAPIClient.src.Infrastructure.UnitOfWork
+namespace RiotGamesAPIClient.src.Infrastructure.EFCore.DbContexts
 {
     public class PlayerDbContext : DbContext
     {

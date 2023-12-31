@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RiotGamesAPIClient.src.Application.Models;
-using RiotGamesAPIClient.src.Infrastructure.UnitOfWork;
+﻿using RiotGamesAPIClient.src.Application.Models;
 
 namespace RiotGamesAPIClient.src.Application.Interfaces
 {

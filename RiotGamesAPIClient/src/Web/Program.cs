@@ -2,12 +2,11 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using RiotGamesAPIClient.src.Application.Interfaces;
+using RiotGamesAPIClient.src.Infrastructure.EFCore.DbContexts;
 using RiotGamesAPIClient.src.Infrastructure.Repositories;
 using RiotGamesAPIClient.src.Infrastructure.Services;
-using RiotGamesAPIClient.src.Infrastructure.UnitOfWork;
-using System.Net.Http;
 
-namespace RiotGamesAPIClient
+namespace RiotGamesAPIClient.src.Web
 {
     public class Program
     {
@@ -29,7 +28,7 @@ namespace RiotGamesAPIClient
             });
             builder.Services.AddControllers();
             var conStrBuilder = new SqlConnectionStringBuilder(
-                builder.Configuration.GetConnectionString("DefaultConnection"));
+            builder.Configuration.GetConnectionString("DefaultConnection"));
             // create the DbContext 
             conStrBuilder.DataSource = builder.Configuration["SQLExpressServerName"];
             var connectionString = conStrBuilder.ConnectionString;
@@ -43,11 +42,10 @@ namespace RiotGamesAPIClient
             builder.Services.AddHttpClient<IRiotAPIService, RiotAPIService>(
                 client =>
                 {
-                // set base address of typed client to Americans region of Riot Games API
-                client.BaseAddress = new Uri("https://americas.api.riotgames.com");
-                Console.WriteLine(client.BaseAddress);
-                // adding HTTP Headers
-                client.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
+                    // set base address of typed client to Americans region of Riot Games API
+                    client.BaseAddress = new Uri("https://americas.api.riotgames.com");
+                    // adding HTTP Headers
+                    client.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
                 });
             // create the Repository
             builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
