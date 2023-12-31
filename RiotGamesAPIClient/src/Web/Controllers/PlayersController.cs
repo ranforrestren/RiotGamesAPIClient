@@ -16,8 +16,8 @@ namespace RiotGamesAPIClient.src.Web.Controllers
         }
 
         // GET: api/Players/byName/GAMENAME/TAGLINE
-        [HttpGet("byName/{gameName}/{tagLine}")]
-        public async Task<ActionResult<Player>> GetPlayerByName(string gameName, string tagLine)
+        [HttpGet("players/byname/{gameName}/{tagLine}")]
+        public async Task<ActionResult<Player>> GetPlayerByNameAsync(string gameName, string tagLine)
         {
             var player = await _playerRepository.GetPlayerByNameAsync(gameName, tagLine);
             if (player == null)
@@ -27,6 +27,21 @@ namespace RiotGamesAPIClient.src.Web.Controllers
             else
             {
                 return player;
+            }
+        }
+
+        // GET: api/Matches/byPuuid
+        [HttpGet("matches/bypuuid/{puuid}")]
+        public async Task<ActionResult<List<string>>> GetMatchesByPuuidAsync(string puuid)
+        {
+            var matches = await _playerRepository.GetMatchesByPuuidAsync(puuid);
+            if (matches == null)
+            {
+                return NotFound();
+            }
+            else
+            { 
+                return matches;
             }
         }
     }

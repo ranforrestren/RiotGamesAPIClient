@@ -13,8 +13,6 @@ namespace RiotGamesAPIClient.src.Infrastructure.Services
         }
         public async Task<RiotAccountAPIResponse> GetAccountByNameAsync(string gameName, string tagLine)
         {
-            // set base address of typed client to Americans region of Riot Games API
-            _httpClient.BaseAddress = new Uri("https://americas.api.riotgames.com");
             var message = await _httpClient.GetAsync($"/riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}");
             if (message.StatusCode == HttpStatusCode.OK)
             {

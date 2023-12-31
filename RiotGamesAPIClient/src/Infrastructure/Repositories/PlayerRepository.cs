@@ -10,11 +10,17 @@ namespace RiotGamesAPIClient.src.Infrastructure.Repositories
         private readonly PlayerDbContext _context;
         private readonly IRiotAccountAPIService _riotAccountAPIService;
         private readonly IRiotSummonerAPIService _riotSummonerAPIService;
-        public PlayerRepository(PlayerDbContext context, IRiotAccountAPIService RiotAccountAPIService, IRiotSummonerAPIService RiotSummonerAPIService)
+        private readonly IRiotMatchAPIService _riotMatchAPIService;
+        public PlayerRepository(
+            PlayerDbContext context, 
+            IRiotAccountAPIService RiotAccountAPIService, 
+            IRiotSummonerAPIService RiotSummonerAPIService, 
+            IRiotMatchAPIService RiotMatchAPIService)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _riotAccountAPIService = RiotAccountAPIService ?? throw new ArgumentNullException(nameof(RiotAccountAPIService));
             _riotSummonerAPIService = RiotSummonerAPIService ?? throw new ArgumentNullException(nameof(RiotSummonerAPIService));
+            _riotMatchAPIService = RiotMatchAPIService ?? throw new ArgumentNullException(nameof(RiotMatchAPIService));
         }
         public async Task<Player> GetPlayerByNameAsync(string gameName, string tagLine)
         {
@@ -55,6 +61,19 @@ namespace RiotGamesAPIClient.src.Infrastructure.Repositories
             else
             {
                 return player;
+            }
+        }
+
+        public async Task<List<string>> GetMatchesByPuuidAsync(string puuid) 
+        {
+            var matchAPIResponse = await _riotMatchAPIService.GetMatchListByPuuidAsync(puuid);
+            if (matchAPIResponse == null)
+            {
+                return null;
+            }
+            else
+            {
+                return matchAPIResponse;
             }
         }
     }

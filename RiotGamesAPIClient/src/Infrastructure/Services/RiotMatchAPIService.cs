@@ -1,23 +1,22 @@
 ﻿using RiotGamesAPIClient.src.Application.Interfaces;
-using RiotGamesAPIClient.src.Infrastructure.Services.Responses;
-using System.Net.Http;
 using System.Net;
 
 namespace RiotGamesAPIClient.src.Infrastructure.Services
 {
-    public class RiotSummonerAPIService : IRiotSummonerAPIService
+    public class RiotMatchAPIService : IRiotMatchAPIService
     {
         private readonly HttpClient _httpClient;
-        public RiotSummonerAPIService(HttpClient httpClient)
+        public RiotMatchAPIService(HttpClient httpClient)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
-        public async Task<RiotSummonerAPIResponse> GetSummonerByPuuidAsync(string puuid)
+
+        public async Task<List<string>> GetMatchListByPuuidAsync(string puuid)
         {
-            var message = await _httpClient.GetAsync($"/lol/summoner/v4/summoners/by-puuid/{puuid}");
+            var message = await _httpClient.GetAsync($"/lol/match/v5/matches/by-puuid/{puuid}/ids");
             if (message.StatusCode == HttpStatusCode.OK)
             {
-                var APIResponse = await message.Content.ReadFromJsonAsync<RiotSummonerAPIResponse>();
+                var APIResponse = await message.Content.ReadFromJsonAsync<List<string>>();
                 return APIResponse;
             }
             else

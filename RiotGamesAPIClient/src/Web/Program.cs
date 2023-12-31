@@ -5,6 +5,7 @@ using RiotGamesAPIClient.src.Application.Interfaces;
 using RiotGamesAPIClient.src.Infrastructure.EFCore.DbContexts;
 using RiotGamesAPIClient.src.Infrastructure.Repositories;
 using RiotGamesAPIClient.src.Infrastructure.Services;
+using System.Net.Http;
 
 namespace RiotGamesAPIClient.src.Web
 {
@@ -36,18 +37,30 @@ namespace RiotGamesAPIClient.src.Web
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            // create the RiotAPIService and configure its HttpClient
+            // create the RiotAPIServices and configure their HttpClients as transient typed clients
             // inject in the API key from the Secrets.json
             var apiKey = builder.Configuration["RiotAPIKey"];
             builder.Services.AddHttpClient<IRiotAccountAPIService, RiotAccountAPIService>(
                 client =>
                 {
+                    // adding base address
+                    client.BaseAddress = new Uri("https://americas.api.riotgames.com");
                     // adding HTTP Headers (API key)
                     client.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
                 });
             builder.Services.AddHttpClient<IRiotSummonerAPIService, RiotSummonerAPIService>(
                 client =>
                 {
+                    // adding base address
+                    client.BaseAddress = new Uri("https://na1.api.riotgames.com");
+                    // adding HTTP Headers (API key)
+                    client.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
+            });
+            builder.Services.AddHttpClient<IRiotMatchAPIService, RiotMatchAPIService>(
+                client =>
+                {
+                    // adding base address
+                    client.BaseAddress = new Uri("https://americas.api.riotgames.com");
                     // adding HTTP Headers (API key)
                     client.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
             });
