@@ -7,20 +7,9 @@ namespace RiotGamesAPIClient.src.Infrastructure.Services
     public class RiotAPIService : IRiotAPIService
     {
         private readonly HttpClient _httpClient;
-
         public RiotAPIService(HttpClient httpClient)
         {
-            var builder = WebApplication.CreateBuilder();
             _httpClient = httpClient;
-
-            // using NA1 Platform ID 
-            _httpClient.BaseAddress = new Uri("https://americas.api.riotgames.com");
-
-            var apiKey = builder.Configuration["RiotAPIKey"];
-
-            // adding HTTP Headers
-            _httpClient.DefaultRequestHeaders.Add(
-                "X-Riot-Token", apiKey);
         }
 
         public async Task<PlayerDTO> GetPlayerByNameAsync(string gameName, string tagLine)

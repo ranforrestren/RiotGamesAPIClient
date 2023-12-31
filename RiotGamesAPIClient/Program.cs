@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RiotGamesAPIClient.Models;
 using RiotGamesAPIClient.src.Application.Interfaces;
 using RiotGamesAPIClient.src.Infrastructure.Services;
+using System.Net.Http;
 
 namespace RiotGamesAPIClient
 {
@@ -35,8 +36,15 @@ namespace RiotGamesAPIClient
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            // create the HttpClient service
-            builder.Services.AddHttpClient<RiotAPIService>();
+            // create the RiotAPIService and configure its HttpClient
+            builder.Services.AddHttpClient<RiotAPIService>(
+                client =>
+                {
+                    // set base address of typed client to Americans region of Riot Games API
+                    client.BaseAddress = new Uri("https://americas.api.riotgames.com");
+                    // inject in the API key from the Secrets.json
+                    var apiKey = builder.Configuration["RiotAPIKey"];
+                });
             builder.Services.AddScoped<IRiotAPIService, RiotAPIService>();
 
             var app = builder.Build();
