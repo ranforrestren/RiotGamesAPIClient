@@ -7,8 +7,6 @@ namespace RiotGamesAPIClient.src.Application.Interfaces
     {
         public Task<Player> GetPlayerByNameAsync(string gameName, string tagLine);
 
-        public Task<List<string>> GetMatchListByPuuidAsync(string puuid);
-
-        public Task<Participant> GetMatchDetailsByMatchIdAndPuuidAsync(string matchId, string puuid);
+        public Task<List<Participant>> GetMatchListByPuuidAsync(string puuid);
     }
 }

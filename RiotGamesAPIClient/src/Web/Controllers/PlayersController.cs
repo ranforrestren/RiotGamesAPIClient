@@ -33,7 +33,7 @@ namespace RiotGamesAPIClient.src.Web.Controllers
 
         // GET: api/Matches/byPuuid
         [HttpGet("matches/bypuuid/{puuid}")]
-        public async Task<ActionResult<List<string>>> GetMatchListByPuuidAsync(string puuid)
+        public async Task<ActionResult<List<Participant>>> GetMatchListByPuuidAsync(string puuid)
         {
             var matches = await _playerRepository.GetMatchListByPuuidAsync(puuid);
             if (matches == null)
@@ -43,21 +43,6 @@ namespace RiotGamesAPIClient.src.Web.Controllers
             else
             { 
                 return matches;
-            }
-        }
-
-        // GET: api/Match/byMatchIdandPuuid
-        [HttpGet("matches/bymatchidandpuuid/{matchId}/{puuid}")]
-        public async Task<ActionResult<Participant>> GetMatchDetailsByMatchIdAndPuuidAsync(string matchId, string puuid)
-        {
-            var matchDetails = await _playerRepository.GetMatchDetailsByMatchIdAndPuuidAsync(matchId, puuid);
-            if (matchDetails == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return matchDetails;
             }
         }
     }

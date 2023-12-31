@@ -65,7 +65,7 @@ namespace RiotGamesAPIClient.src.Infrastructure.Repositories
             }
         }
 
-        public async Task<List<string>> GetMatchListByPuuidAsync(string puuid) 
+        public async Task<List<Participant>> GetMatchListByPuuidAsync(string puuid) 
         {
             var matchAPIResponse = await _riotMatchAPIService.GetMatchListByPuuidAsync(puuid);
             if (matchAPIResponse == null)
@@ -74,20 +74,13 @@ namespace RiotGamesAPIClient.src.Infrastructure.Repositories
             }
             else
             {
-                return matchAPIResponse;
-            }
-        }
-
-        public async Task<Participant> GetMatchDetailsByMatchIdAndPuuidAsync(string matchId, string puuid)
-        {
-            var matchAPIResponse = await _riotMatchAPIService.GetMatchDetailsByMatchIdAndPuuidAsync(matchId, puuid);
-            if (matchAPIResponse == null)
-            {
-                return null;
-            }
-            else
-            {
-                return matchAPIResponse;
+                List<Participant> matchHistory = new List<Participant>();
+                foreach (string matchId in matchAPIResponse)
+                {
+                    var matchDetailsAPIResponse = await _riotMatchAPIService.GetMatchDetailsByMatchIdAndPuuidAsync(matchId, puuid);
+                    matchHistory.Add(matchDetailsAPIResponse);
+                }
+                return matchHistory;
             }
         }
     }
