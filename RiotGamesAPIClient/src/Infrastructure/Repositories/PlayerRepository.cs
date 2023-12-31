@@ -2,6 +2,7 @@
 using RiotGamesAPIClient.src.Application.Interfaces;
 using RiotGamesAPIClient.src.Application.Models;
 using RiotGamesAPIClient.src.Infrastructure.EFCore.DbContexts;
+using static RiotGamesAPIClient.src.Infrastructure.Services.Responses.RiotMatchAPIResponse;
 
 namespace RiotGamesAPIClient.src.Infrastructure.Repositories
 {
@@ -64,9 +65,22 @@ namespace RiotGamesAPIClient.src.Infrastructure.Repositories
             }
         }
 
-        public async Task<List<string>> GetMatchesByPuuidAsync(string puuid) 
+        public async Task<List<string>> GetMatchListByPuuidAsync(string puuid) 
         {
             var matchAPIResponse = await _riotMatchAPIService.GetMatchListByPuuidAsync(puuid);
+            if (matchAPIResponse == null)
+            {
+                return null;
+            }
+            else
+            {
+                return matchAPIResponse;
+            }
+        }
+
+        public async Task<Participant> GetMatchDetailsByMatchIdAndPuuidAsync(string matchId, string puuid)
+        {
+            var matchAPIResponse = await _riotMatchAPIService.GetMatchDetailsByMatchIdAndPuuidAsync(matchId, puuid);
             if (matchAPIResponse == null)
             {
                 return null;

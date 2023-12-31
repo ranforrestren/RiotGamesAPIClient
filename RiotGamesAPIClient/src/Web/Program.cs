@@ -5,7 +5,6 @@ using RiotGamesAPIClient.src.Application.Interfaces;
 using RiotGamesAPIClient.src.Infrastructure.EFCore.DbContexts;
 using RiotGamesAPIClient.src.Infrastructure.Repositories;
 using RiotGamesAPIClient.src.Infrastructure.Services;
-using System.Net.Http;
 
 namespace RiotGamesAPIClient.src.Web
 {

@@ -1,6 +1,5 @@
 ﻿using RiotGamesAPIClient.src.Application.Interfaces;
 using RiotGamesAPIClient.src.Infrastructure.Services.Responses;
-using System.Net.Http;
 using System.Net;
 
 namespace RiotGamesAPIClient.src.Infrastructure.Services
