@@ -31,7 +31,6 @@ async function getByName(name, tag) {
         transition: filter 300ms;
         width: 800px;
         margin: auto;
-        margin-bottom: 40px;
     }
     input {
         border: none;
