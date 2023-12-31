@@ -1,24 +1,25 @@
 ﻿using RiotGamesAPIClient.src.Application.Interfaces;
-using RiotGamesAPIClient.src.Application.Models;
+using RiotGamesAPIClient.src.Infrastructure.Services.Responses;
 using System.Net;
 
 namespace RiotGamesAPIClient.src.Infrastructure.Services
 {
-    public class RiotAPIService : IRiotAPIService
+    public class RiotAccountAPIService : IRiotAccountAPIService
     {
         private readonly HttpClient _httpClient;
-        public RiotAPIService(HttpClient httpClient)
+        public RiotAccountAPIService(HttpClient httpClient)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
-
-        public async Task<PlayerDTO> GetPlayerByNameAsync(string gameName, string tagLine)
+        public async Task<RiotAccountAPIResponse> GetAccountByNameAsync(string gameName, string tagLine)
         {
+            // set base address of typed client to Americans region of Riot Games API
+            _httpClient.BaseAddress = new Uri("https://americas.api.riotgames.com");
             var message = await _httpClient.GetAsync($"/riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}");
             if (message.StatusCode == HttpStatusCode.OK)
             {
-                var playerDTO = await message.Content.ReadFromJsonAsync<PlayerDTO>();
-                return playerDTO;
+                var APIResponse = await message.Content.ReadFromJsonAsync<RiotAccountAPIResponse>();
+                return APIResponse;
             }
             else
             {

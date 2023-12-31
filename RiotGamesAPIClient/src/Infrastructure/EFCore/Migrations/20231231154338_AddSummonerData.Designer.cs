@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RiotGamesAPIClient.src.Infrastructure.EFCore.DbContexts;
 
@@ -10,9 +11,11 @@ using RiotGamesAPIClient.src.Infrastructure.EFCore.DbContexts;
 namespace RiotGamesAPIClient.Migrations
 {
     [DbContext(typeof(PlayerDbContext))]
-    partial class PlayerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231231154338_AddSummonerData")]
+    partial class AddSummonerData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -15,5 +15,13 @@ namespace RiotGamesAPIClient.src.Application.Models
         [Required]
         [MaxLength(10)]
         public string PlayerRiotTagline { get; set; } // tagLine
+        [Required]
+        public string PlayerRiotAccountId { get; set; } // accountId
+        [Required]
+        public int PlayerProfileIconId { get; set; } // profileIconId
+        [Required]
+        public string PlayerSummonerId { get; set; } // id
+        [Required]
+        public long PlayerSummonerLevel { get; set; } // summonerLevel
     }
 }

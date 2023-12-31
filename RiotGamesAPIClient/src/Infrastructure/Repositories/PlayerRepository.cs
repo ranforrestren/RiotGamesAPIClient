@@ -8,11 +8,13 @@ namespace RiotGamesAPIClient.src.Infrastructure.Repositories
     public class PlayerRepository : IPlayerRepository
     {
         private readonly PlayerDbContext _context;
-        private readonly IRiotAPIService _riotAPIService;
-        public PlayerRepository(PlayerDbContext context, IRiotAPIService RiotAPIService)
+        private readonly IRiotAccountAPIService _riotAccountAPIService;
+        private readonly IRiotSummonerAPIService _riotSummonerAPIService;
+        public PlayerRepository(PlayerDbContext context, IRiotAccountAPIService RiotAccountAPIService, IRiotSummonerAPIService RiotSummonerAPIService)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _riotAPIService = RiotAPIService ?? throw new ArgumentNullException(nameof(RiotAPIService));
+            _riotAccountAPIService = RiotAccountAPIService ?? throw new ArgumentNullException(nameof(RiotAccountAPIService));
+            _riotSummonerAPIService = RiotSummonerAPIService ?? throw new ArgumentNullException(nameof(RiotSummonerAPIService));
         }
         public async Task<Player> GetPlayerByNameAsync(string gameName, string tagLine)
         {
@@ -24,18 +26,25 @@ namespace RiotGamesAPIClient.src.Infrastructure.Repositories
             if (player == null)
             {
                 // create HTTPRequest to get player UUID and create player object otherwise
-                var playerDTO = await _riotAPIService.GetPlayerByNameAsync(gameName, tagLine);
-                if (playerDTO == null)
+                var accountAPIResponse = await _riotAccountAPIService.GetAccountByNameAsync(gameName, tagLine);
+                if (accountAPIResponse == null)
                 {
                     return null;
                 }
                 else
                 {
-                    // create new player from playerDTO
+                    // second HTTPRequest to get summoner data from UUID
+                    string puuid = accountAPIResponse.puuid;
+                    var summonerAPIResponse = await _riotSummonerAPIService.GetSummonerByPuuidAsync(puuid);
+                    // create new player from the API responses
                     var newPlayer = new Player();
-                    newPlayer.PlayerRiotUUID = playerDTO.puuid;
-                    newPlayer.PlayerRiotName = playerDTO.gameName;
-                    newPlayer.PlayerRiotTagline = playerDTO.tagLine;
+                    newPlayer.PlayerRiotUUID = accountAPIResponse.puuid;
+                    newPlayer.PlayerRiotName = accountAPIResponse.gameName;
+                    newPlayer.PlayerRiotTagline = accountAPIResponse.tagLine;
+                    newPlayer.PlayerRiotAccountId = summonerAPIResponse.accountId;
+                    newPlayer.PlayerProfileIconId = summonerAPIResponse.profileIconId;
+                    newPlayer.PlayerSummonerId = summonerAPIResponse.id;
+                    newPlayer.PlayerSummonerLevel = summonerAPIResponse.summonerLevel;
                     // and save to DB
                     _context.Players.Add(newPlayer);
                     await _context.SaveChangesAsync();

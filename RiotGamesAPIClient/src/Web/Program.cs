@@ -39,14 +39,18 @@ namespace RiotGamesAPIClient.src.Web
             // create the RiotAPIService and configure its HttpClient
             // inject in the API key from the Secrets.json
             var apiKey = builder.Configuration["RiotAPIKey"];
-            builder.Services.AddHttpClient<IRiotAPIService, RiotAPIService>(
+            builder.Services.AddHttpClient<IRiotAccountAPIService, RiotAccountAPIService>(
                 client =>
                 {
-                    // set base address of typed client to Americans region of Riot Games API
-                    client.BaseAddress = new Uri("https://americas.api.riotgames.com");
-                    // adding HTTP Headers
+                    // adding HTTP Headers (API key)
                     client.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
                 });
+            builder.Services.AddHttpClient<IRiotSummonerAPIService, RiotSummonerAPIService>(
+                client =>
+                {
+                    // adding HTTP Headers (API key)
+                    client.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
+            });
             // create the Repository
             builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 
