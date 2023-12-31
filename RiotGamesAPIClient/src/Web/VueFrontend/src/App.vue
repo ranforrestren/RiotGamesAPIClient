@@ -1,9 +1,11 @@
 <script setup>
 import Searchbar from './components/Searchbar.vue';
 import PlayerInfo from './components/PlayerInfo.vue';
+import MatchHistory from './components/MatchHistory.vue';
 import { ref } from 'vue';
 
 const player = ref(null);
+const matchList = ref(null);
 </script>
 
 <template>
@@ -12,7 +14,9 @@ const player = ref(null);
     <img src="./assets/Syndra_6.jpg">
     </div>
     <Searchbar @search="(p) => player = p"/>
-    <PlayerInfo :player="player" v-if="player != null"/>
+    <PlayerInfo @search="(m) => matchList = m" :player="player" v-if="player != null"/>
+    <MatchHistory :matchList="matchList" v-if="matchList != null">
+    </MatchHistory>
   </div>
 </template>
 

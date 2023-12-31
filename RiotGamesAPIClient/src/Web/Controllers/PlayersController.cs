@@ -5,7 +5,7 @@ using static RiotGamesAPIClient.src.Infrastructure.Services.Responses.RiotMatchA
 
 namespace RiotGamesAPIClient.src.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class PlayersController : ControllerBase
     {

@@ -6,14 +6,14 @@ import { ref } from 'vue';
 const emits = defineEmits(['search']);
 
 async function getByName(name, tag) {
-    const response = await fetch(`https://localhost:7179/api/Players/byName/${name}/${tag}`);
+    const response = await fetch(`https://localhost:7179/api/players/byname/${name}/${tag}`);
     const player = await response.json();
     emits('search', player);
 }
 </script>
 
 <template>
-    <div class="hflex" method="GET" action="https://localhost:7179/api/Players/byName/">
+    <div class="hflex">
         <input class="gameName" type="text" placeholder="GAMENAME" v-model="gameName">
         <div class="spacing">#</div>
         <input class="tagLine" type="text" placeholder="TAGLINE" v-model="tagLine">

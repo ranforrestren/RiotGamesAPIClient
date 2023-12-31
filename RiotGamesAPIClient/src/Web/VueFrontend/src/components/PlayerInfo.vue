@@ -1,11 +1,19 @@
 <script setup>
-const props = defineProps(['player'])
-console.log(props.player);
+const props = defineProps(['player']);
+
+const emits = defineEmits(['search']);
+
+async function getByPuuid(puuid) {
+    const response = await fetch(`https://localhost:7179/api/matches/bypuuid/${puuid}`);
+    const matchList = await response.json();
+    emits('search', matchList);
+}
 </script>
 
 <template>
     <div class="playerInfo">
-        <img :src="'https://ddragon.leagueoflegends.com/cdn/13.24.1/img/profileicon/' + player.playerProfileIconId + '.png'">
+        <img :src="'https://ddragon.leagueoflegends.com/cdn/13.24.1/img/profileicon/' + player.playerProfileIconId + '.png'"
+        @click="getByPuuid(player.playerRiotUUID)">
         <div class="vflex">
             <div class="name">
                 {{ player.playerRiotName }} <span class="tag"># {{ player.playerRiotTagline }}</span>
