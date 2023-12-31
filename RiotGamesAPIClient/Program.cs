@@ -1,9 +1,10 @@
 
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using RiotGamesAPIClient.Models;
 using RiotGamesAPIClient.src.Application.Interfaces;
+using RiotGamesAPIClient.src.Infrastructure.Repositories;
 using RiotGamesAPIClient.src.Infrastructure.Services;
+using RiotGamesAPIClient.src.Infrastructure.UnitOfWork;
 using System.Net.Http;
 
 namespace RiotGamesAPIClient
@@ -29,7 +30,7 @@ namespace RiotGamesAPIClient
             builder.Services.AddControllers();
             var conStrBuilder = new SqlConnectionStringBuilder(
                 builder.Configuration.GetConnectionString("DefaultConnection"));
-            // load secrets
+            // create the DbContext 
             conStrBuilder.DataSource = builder.Configuration["SQLExpressServerName"];
             var connectionString = conStrBuilder.ConnectionString;
             builder.Services.AddDbContext<PlayerDbContext>(options => options.UseSqlServer(connectionString));
@@ -37,15 +38,19 @@ namespace RiotGamesAPIClient
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             // create the RiotAPIService and configure its HttpClient
-            builder.Services.AddHttpClient<RiotAPIService>(
+            // inject in the API key from the Secrets.json
+            var apiKey = builder.Configuration["RiotAPIKey"];
+            builder.Services.AddHttpClient<IRiotAPIService, RiotAPIService>(
                 client =>
                 {
-                    // set base address of typed client to Americans region of Riot Games API
-                    client.BaseAddress = new Uri("https://americas.api.riotgames.com");
-                    // inject in the API key from the Secrets.json
-                    var apiKey = builder.Configuration["RiotAPIKey"];
+                // set base address of typed client to Americans region of Riot Games API
+                client.BaseAddress = new Uri("https://americas.api.riotgames.com");
+                Console.WriteLine(client.BaseAddress);
+                // adding HTTP Headers
+                client.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
                 });
-            builder.Services.AddScoped<IRiotAPIService, RiotAPIService>();
+            // create the Repository
+            builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 
             var app = builder.Build();
 

@@ -1,4 +1,4 @@
-﻿using RiotGamesAPIClient.Models;
+﻿using RiotGamesAPIClient.src.Application.Models;
 
 namespace RiotGamesAPIClient.src.Application.Interfaces
 {

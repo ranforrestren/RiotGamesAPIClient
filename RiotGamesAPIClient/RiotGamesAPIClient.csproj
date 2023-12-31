@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Frontend\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
