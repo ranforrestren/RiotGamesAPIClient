@@ -2,7 +2,8 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using RiotGamesAPIClient.Models;
-using RiotGamesAPIClient.Services;
+using RiotGamesAPIClient.src.Application.Interfaces;
+using RiotGamesAPIClient.src.Infrastructure.Services;
 
 namespace RiotGamesAPIClient
 {
@@ -35,7 +36,8 @@ namespace RiotGamesAPIClient
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             // create the HttpClient service
-            builder.Services.AddHttpClient<RiotGamesAPIService>();
+            builder.Services.AddHttpClient<RiotAPIService>();
+            builder.Services.AddScoped<IRiotAPIService, RiotAPIService>();
 
             var app = builder.Build();
 

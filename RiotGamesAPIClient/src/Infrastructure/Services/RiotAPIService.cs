@@ -1,14 +1,14 @@
 ﻿using RiotGamesAPIClient.Models;
+using RiotGamesAPIClient.src.Application.Interfaces;
 using System.Net;
 
-namespace RiotGamesAPIClient.Services
+namespace RiotGamesAPIClient.src.Infrastructure.Services
 {
-    public class RiotGamesAPIService
+    public class RiotAPIService : IRiotAPIService
     {
         private readonly HttpClient _httpClient;
 
-
-        public RiotGamesAPIService(HttpClient httpClient)
+        public RiotAPIService(HttpClient httpClient)
         {
             var builder = WebApplication.CreateBuilder();
             _httpClient = httpClient;
@@ -31,7 +31,8 @@ namespace RiotGamesAPIClient.Services
             {
                 var playerDTO = await message.Content.ReadFromJsonAsync<PlayerDTO>();
                 return playerDTO;
-            } else
+            }
+            else
             {
                 return null;
             }
